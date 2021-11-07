@@ -18,8 +18,8 @@ export default {
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  color: #2c3e50;
-  background-color: #fafafa;
+  color: lightgrey;
+  background-color: rgb(37, 37, 41);
   padding: 24px;
   box-sizing: border-box;
 }
@@ -27,7 +27,8 @@ export default {
 html,
 body,
 #app {
-  height: 100%;
+  min-height: 100vh;
+  margin: 0;
 }
 
 * {
