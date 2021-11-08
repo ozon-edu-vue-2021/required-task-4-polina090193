@@ -38,7 +38,6 @@
           'input_text',
           { warning: this.errors.includes('fatherName') },
         ]"
-        @input="clearWarning('fatherName')"
         v-model="formData.fatherName.value"
       />
     </label>
@@ -106,7 +105,7 @@
       @no-citizenship="noCitizenShipSelected"
     />
 
-    <fieldset class="fieldset fieldset-rus" v-if="isRus">
+    <fieldset class="fieldset fieldset-rus" v-if="rusForm">
       <label for="serie" class="label label_for-text">
         <span>Серия паспорта*</span>
         <input
@@ -155,7 +154,7 @@
       </label>
     </fieldset>
 
-    <fieldset class="fieldset fieldset-abroad" v-if="isAbroad">
+    <fieldset class="fieldset fieldset-abroad" v-if="abroadForm">
       <label for="lastname-lat" class="label label_for-text">
         <span>Фамилия на латинице*</span>
         <input
@@ -297,17 +296,12 @@ export default {
         email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
         serie: (value) => /^\d{4}$/.test(value),
         numRus: (value) => /^\d{6}$/.test(value),
-        numAbroad: (value) => /^\d$/.test(value),
+        numAbroad: (value) => !Number.isNaN(value),
       },
-      isRus: false,
-      isAbroad: false,
       nameChangeVal: "Нет",
       nameChanged: false,
-      citizenship: {
-        value: null,
-        required: true,
-      },
       errors: [],
+      formCountry: false,
     };
   },
   computed: {
@@ -341,7 +335,10 @@ export default {
         gender: {
           value: "Мужской",
         },
-        citizenship: this.citizenship,
+        citizenship: {
+          value: null,
+          required: true,
+        },
         serie: {
           value: null,
           required: this.isRus,
@@ -392,13 +389,12 @@ export default {
         },
       };
     },
-  },
-  provide() {
-    return {
-      removeWarning: this.removeWarning,
-      validateInput: this.validateInput,
-      formData: this.formData,
-    };
+    rusForm() {
+      return this.formCountry === 'Russia'
+    },
+    abroadForm() {
+      return !!this.formCountry && this.formCountry !== 'Russia'
+    }
   },
   watch: {
     nameChangeVal(newValue) {
@@ -408,17 +404,10 @@ export default {
   methods: {
     onCitizenShipSet(citizenShip) {
       this.formData.citizenship.value = citizenShip;
-      if (citizenShip === "Russia") {
-        this.isRus = true;
-        this.isAbroad = false;
-      } else {
-        this.isRus = false;
-        this.isAbroad = true;
-      }
+      this.formCountry = citizenShip
     },
     noCitizenShipSelected() {
-      this.isRus = false;
-      this.isAbroad = false;
+      this.formCountry = null
       this.formData.citizenship.value = null;
     },
     onCountrySet(countrySelected) {
@@ -434,6 +423,7 @@ export default {
       this.errors.splice(this.errors.indexOf(name), 1);
     },
     validateForm() {
+      this.errors.length = 0;
       const data = this.formData;
 
       for (let key in data) {
@@ -448,12 +438,12 @@ export default {
           this.errors.push(key);
         }
       }
-
       if (!this.errors.length) this.submitForm();
     },
 
     submitForm() {
-      alert("Форма отправлена!");
+      alert(`Форма отправлена!
+      ${JSON.stringify(this.formData, null, " ")}`);
     },
   },
 };
@@ -520,6 +510,7 @@ export default {
 .selector___dropdown {
   position: absolute;
   top: calc(100% - 14px);
+  z-index: 10;
   max-height: 200px;
   overflow-y: auto;
   width: 100%;
