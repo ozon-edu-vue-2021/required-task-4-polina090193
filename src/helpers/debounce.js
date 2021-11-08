@@ -1,4 +1,4 @@
-export default function debounce(f, t) {
+export function debounce(f, t) {
   const calls = {};
   return function (args) {
     let previousCall = calls.lastCall;
