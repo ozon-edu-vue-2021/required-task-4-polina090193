@@ -40,6 +40,7 @@
           'input_text',
           { warning: this.errors.includes('fatherName') },
         ]"
+        @input="clearWarning('fatherName')"
         v-model="formData.fatherName.value"
       />
     </label>
@@ -308,7 +309,6 @@ export default {
         email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
         serie: (value) => /^\d{4}$/.test(value),
         numRus: (value) => /^\d{6}$/.test(value),
-        numAbroad: (value) => !Number.isNaN(value),
       },
       nameChangeVal: "Нет",
       nameChanged: false,
@@ -363,7 +363,6 @@ export default {
         },
         abroadNum: {
           value: null,
-          validator: "numAbroad",
         },
         passType: {
           value: null,

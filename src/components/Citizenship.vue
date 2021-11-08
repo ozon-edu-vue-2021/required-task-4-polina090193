@@ -59,7 +59,7 @@ export default {
       return this.selectorType === "citizen"
         ? "Гражданство*"
         : this.selectorType === "issue-country"
-        ? "Страна выдачи*"
+        ? "Страна выдачи"
         : "";
     },
   },
@@ -115,7 +115,7 @@ export default {
       this.$emit("no-country");
     },
     clearWarning(e) {
-      this.$emit("clear-warning-citizenship", e, 'citizenship');
+      this.$emit("clear-warning-citizenship", e, "citizenship");
     },
   },
 };
