@@ -103,6 +103,8 @@
       :selector-type="'citizen'"
       @citizenship-set="onCitizenShipSet"
       @no-citizenship="noCitizenShipSelected"
+      @clear-warning-citizenship="clearWarning"
+      :error="this.errors.includes('citizenship')"
     />
 
     <fieldset class="fieldset fieldset-rus" v-if="rusForm">
@@ -302,11 +304,9 @@ export default {
       nameChanged: false,
       errors: [],
       formCountry: false,
-    };
-  },
-  computed: {
-    formData() {
-      return {
+      rusForm: false,
+      abroadForm: false,
+      formData: {
         lastName: {
           value: null,
           required: true,
@@ -387,27 +387,31 @@ export default {
           required: false,
           validator: "rusOnly",
         },
-      };
+      
     },
-    rusForm() {
-      return this.formCountry === 'Russia'
-    },
-    abroadForm() {
-      return !!this.formCountry && this.formCountry !== 'Russia'
-    }
+    };
   },
   watch: {
     nameChangeVal(newValue) {
       this.nameChanged = newValue === "Да";
     },
+    formCountry(newValue) {
+      if (newValue === "Russia") {
+        this.rusForm = true
+        this.abroadForm = false
+      } else if (newValue) {
+        this.rusForm = false
+        this.abroadForm = true
+      }
+    }
   },
   methods: {
     onCitizenShipSet(citizenShip) {
       this.formData.citizenship.value = citizenShip;
-      this.formCountry = citizenShip
+      this.formCountry = citizenShip;
     },
     noCitizenShipSelected() {
-      this.formCountry = null
+      this.formCountry = null;
       this.formData.citizenship.value = null;
     },
     onCountrySet(countrySelected) {
@@ -420,7 +424,9 @@ export default {
       this.formData.passType.value = type;
     },
     clearWarning(name) {
+      console.log(this.errors);
       this.errors.splice(this.errors.indexOf(name), 1);
+      console.log(this.errors);
     },
     validateForm() {
       this.errors.length = 0;

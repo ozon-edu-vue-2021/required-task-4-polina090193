@@ -5,7 +5,8 @@
       v-model="citizenship"
       :id="selectorType"
       @focus="isDropdownOpen = true"
-      class="input input_choose"
+      :class="['input', 'input_choose', { warning: this.error }]"
+      @click="clearWarning"
     />
     <div
       class="clear-citizenship"
@@ -39,6 +40,10 @@ export default {
     selectorType: {
       type: String,
       default: "",
+    },
+    error: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -109,12 +114,14 @@ export default {
     noCountrySelected() {
       this.$emit("no-country");
     },
+    clearWarning(e) {
+      this.$emit("clear-warning-citizenship", e, 'citizenship');
+    },
   },
 };
 </script>
 
 <style scoped>
-
 .clear-citizenship {
   position: absolute;
   top: 33%;
