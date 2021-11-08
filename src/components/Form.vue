@@ -341,41 +341,41 @@ export default {
         },
         serie: {
           value: null,
-          required: this.isRus,
+          required: this.rusForm,
           validator: "serie",
         },
         rusNum: {
           value: null,
-          required: this.isRus,
+          required: this.rusForm,
           validator: "numRus",
         },
         rusDate: {
           value: null,
-          required: this.isRus,
+          required: this.rusForm,
           validator: "date",
         },
         lastNameLat: {
           value: null,
-          required: this.isAbroad,
+          required: this.abroadForm,
           validator: "enOnly",
         },
         firstNameLat: {
           value: null,
-          required: this.isAbroad,
+          required: this.abroadForm,
           validator: "enOnly",
         },
         abroadNum: {
           value: null,
-          required: this.isAbroad,
+          required: this.abroadForm,
           validator: "numAbroad",
         },
         passType: {
           value: null,
-          required: this.isAbroad,
+          required: this.abroadForm,
         },
         country: {
           value: null,
-          required: this.isAbroad,
+          required: this.abroadForm,
         },
         prevLastName: {
           value: null,
