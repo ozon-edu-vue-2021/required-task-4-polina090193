@@ -12,6 +12,7 @@
         ]"
         @input="clearWarning('lastName')"
         v-model="formData.lastName.value"
+        required
       />
     </label>
     <label for="firstname" class="label label_for-text">
@@ -26,6 +27,7 @@
         ]"
         @input="clearWarning('firstName')"
         v-model="formData.firstName.value"
+        required
       />
     </label>
     <label for="fathername" class="label label_for-text">
@@ -54,6 +56,7 @@
         ]"
         @input="clearWarning('birthDate')"
         v-model="formData.birthDate.value"
+        required
       />
     </label>
 
@@ -69,6 +72,7 @@
         ]"
         @input="clearWarning('email')"
         v-model="formData.email.value"
+        required
       />
     </label>
 
@@ -121,6 +125,7 @@
           ]"
           @input="clearWarning('serie')"
           v-model="formData.serie.value"
+          :required="this.rusForm"
         />
       </label>
 
@@ -137,6 +142,7 @@
           ]"
           @input="clearWarning('rusNum')"
           v-model="formData.rusNum.value"
+          :required="this.rusForm"
         />
       </label>
 
@@ -152,6 +158,7 @@
           ]"
           @input="clearWarning('rusDate')"
           v-model="formData.rusDate.value"
+          :required="this.rusForm"
         />
       </label>
     </fieldset>
@@ -169,6 +176,7 @@
           ]"
           @input="clearWarning('lastNameLat')"
           v-model="formData.lastNameLat.value"
+          :required="this.abroadForm"
         />
       </label>
 
@@ -184,6 +192,7 @@
           ]"
           @input="clearWarning('firstNameLat')"
           v-model="formData.firstNameLat.value"
+          :required="this.abroadForm"
         />
       </label>
 
@@ -200,6 +209,7 @@
           ]"
           @input="clearWarning('abroadNum')"
           v-model="formData.abroadNum.value"
+          :required="this.abroadForm"
         />
       </label>
       <Citizenship
@@ -304,32 +314,25 @@ export default {
       nameChanged: false,
       errors: [],
       formCountry: false,
-      rusForm: false,
-      abroadForm: false,
       formData: {
         lastName: {
           value: null,
-          required: true,
           validator: "rusOnly",
         },
         firstName: {
           value: null,
-          required: true,
           validator: "rusOnly",
         },
         fatherName: {
           value: null,
-          required: false,
           validator: "rusOnly",
         },
         birthDate: {
           value: null,
-          required: true,
           validator: "date",
         },
         email: {
           value: null,
-          required: true,
           validator: "email",
         },
         gender: {
@@ -337,73 +340,60 @@ export default {
         },
         citizenship: {
           value: null,
-          required: true,
         },
         serie: {
           value: null,
-          required: this.rusForm,
           validator: "serie",
         },
         rusNum: {
           value: null,
-          required: this.rusForm,
           validator: "numRus",
         },
         rusDate: {
           value: null,
-          required: this.rusForm,
           validator: "date",
         },
         lastNameLat: {
           value: null,
-          required: this.abroadForm,
           validator: "enOnly",
         },
         firstNameLat: {
           value: null,
-          required: this.abroadForm,
           validator: "enOnly",
         },
         abroadNum: {
           value: null,
-          required: this.abroadForm,
           validator: "numAbroad",
         },
         passType: {
           value: null,
-          required: this.abroadForm,
         },
         country: {
           value: null,
-          required: this.abroadForm,
         },
         prevLastName: {
           value: null,
-          required: false,
           validator: "rusOnly",
         },
         prevFirstName: {
           value: null,
-          required: false,
           validator: "rusOnly",
         },
-      
-    },
+      },
     };
+  },
+  computed: {
+    rusForm() {
+      return this.formCountry === "Russia";
+    },
+    abroadForm() {
+      return !!this.formCountry && this.formCountry !== "Russia";
+    },
   },
   watch: {
     nameChangeVal(newValue) {
       this.nameChanged = newValue === "Да";
     },
-    formCountry(newValue) {
-      if (newValue === "Russia") {
-        this.rusForm = true
-        this.abroadForm = false
-      } else if (newValue) {
-        this.rusForm = false
-        this.abroadForm = true
-      }
-    }
   },
   methods: {
     onCitizenShipSet(citizenShip) {
@@ -434,7 +424,7 @@ export default {
 
       for (let key in data) {
         let item = data[key];
-        if (item.required && !item.value) {
+        if (key === "citizenship" && !item.value) {
           this.errors.push(key);
         } else if (
           item.value &&
