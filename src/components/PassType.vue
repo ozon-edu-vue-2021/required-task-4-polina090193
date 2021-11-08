@@ -1,5 +1,5 @@
 <template>
-  <div class="passtype-selector" v-click-outside="hideDropdown">
+  <div class="selector" v-click-outside="hideDropdown">
     <label class="label label_choose" for="pass-type">Тип паспорта*</label>
     <input
       v-model="passType"
@@ -7,7 +7,7 @@
       @focus="isDropdownOpen = true"
       class="input input_choose"
     />
-    <div v-if="isDropdownOpen" class="passtype-selector___dropdown">
+    <div v-if="isDropdownOpen" class="selector___dropdown">
       <ul v-if="allPassTypes.length">
         <li
           v-for="passtype in allPassTypes"
@@ -39,11 +39,13 @@ export default {
   },
   created() {
     this.allPassTypes = passTypes;
+    this.passType = passTypes[0].type;
   },
   methods: {
     onPassTypeClick(selectedPassType) {
       this.passType = selectedPassType;
       this.isDropdownOpen = false;
+      this.$emit("passtype-set", selectedPassType);
     },
     hideDropdown() {
       this.isDropdownOpen = false;
@@ -53,38 +55,5 @@ export default {
 </script>
 
 <style scoped>
-.citizenship-selector {
-  position: relative;
-}
-.citizenship-selector___dropdown {
-  position: absolute;
-  top: calc(100% - 14px);
-  max-height: 200px;
-  overflow-y: auto;
-  width: 100%;
-  background: white;
-  border-radius: 10px;
-  color: rgb(37, 37, 41);
-}
-.citizenship-selector___dropdown ul {
-  padding-left: 0;
-}
-.citizenship-selector___dropdown li,
-.empty {
-  padding: 4px 10px;
-  list-style: none;
-  cursor: pointer;
-}
-.citizenship-selector___dropdown li:hover {
-  background-color: rgb(37, 37, 41);
-  color: lightgrey;
-}
-.clear-citizenship {
-  position: absolute;
-  top: 33%;
-  right: 10px;
-  font-size: 30px;
-  cursor: pointer;
-  color: rgb(37, 37, 41);
-}
+
 </style>

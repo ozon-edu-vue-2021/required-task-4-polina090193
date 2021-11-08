@@ -1,5 +1,5 @@
 <template>
-  <div class="citizenship-selector" v-click-outside="hideDropdown">
+  <div class="selector" v-click-outside="hideDropdown">
     <label class="label label_choose" :for="selectorType">{{ getTitle }}</label>
     <input
       v-model="citizenship"
@@ -14,7 +14,7 @@
     >
       ×
     </div>
-    <div v-if="isDropdownOpen" class="citizenship-selector___dropdown">
+    <div v-if="isDropdownOpen" class="selector___dropdown">
       <ul v-if="allCitizenships.length">
         <li
           v-for="citizenship in allCitizenships"
@@ -114,32 +114,7 @@ export default {
 </script>
 
 <style scoped>
-.citizenship-selector {
-  position: relative;
-}
-.citizenship-selector___dropdown {
-  position: absolute;
-  top: calc(100% - 14px);
-  max-height: 200px;
-  overflow-y: auto;
-  width: 100%;
-  background: white;
-  border-radius: 10px;
-  color: rgb(37, 37, 41);
-}
-.citizenship-selector___dropdown ul {
-  padding-left: 0;
-}
-.citizenship-selector___dropdown li,
-.empty {
-  padding: 4px 10px;
-  list-style: none;
-  cursor: pointer;
-}
-.citizenship-selector___dropdown li:hover {
-  background-color: rgb(37, 37, 41);
-  color: lightgrey;
-}
+
 .clear-citizenship {
   position: absolute;
   top: 33%;
