@@ -413,9 +413,7 @@ export default {
       this.formData.passType.value = type;
     },
     clearWarning(name) {
-      console.log(this.errors);
       this.errors.splice(this.errors.indexOf(name), 1);
-      console.log(this.errors);
     },
     validateForm() {
       this.errors.length = 0;
